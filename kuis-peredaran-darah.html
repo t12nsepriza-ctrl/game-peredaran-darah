@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kuis Interaktif IPA Kelas 8: Sistem Peredaran Darah</title>
+  <style>
+    :root {
+      --primary: #e11d48;
+      --primary-dark: #be123c;
+      --primary-light: #ffe4e6;
+      --secondary: #2563eb;
+      --secondary-light: #dbeafe;
+      --bg-gradient: linear-gradient(135deg, #fff1f2 0%, #eff6ff 50%, #f0fdf4 100%);
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --success: #16a34a;
+      --success-bg: #dcfce7;
+      --danger: #dc2626;
+      --danger-bg: #fee2e2;
+      --warning: #d97706;
+      --shadow: 0 12px 30px -8px rgba(15, 23, 42, 0.12);
+      --radius: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-x: hidden;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 760px;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      overflow: hidden;
+      position: relative;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulseBeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.12); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+
+    .screen {
+      display: none;
+      padding: 32px 28px;
+    }
+
+    .screen.active {
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
+
+    /* Welcome Screen */
+    .welcome-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .heart-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 38px;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 20px rgba(225, 29, 72, 0.18);
+      animation: pulseBeat 1.8s infinite ease-in-out;
+    }
+
+    .tag-pill {
+      display: inline-block;
+      background: var(--secondary-light);
+      color: var(--secondary);
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 5px 14px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.98rem;
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 24px 0;
+    }
+
+    .info-card {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 10px;
+      text-align: center;
+    }
+
+    .info-card .icon {
+      font-size: 1.4rem;
+      margin-bottom: 4px;
+    }
+
+    .info-card .label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .info-card .value {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text-main);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 700;
+      font-size: 0.92rem;
+      margin-bottom: 8px;
+      color: var(--text-main);
+    }
+
+    .input-name {
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 1rem;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .input-name:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(225, 29, 72, 0.12);
+    }
+
+    .error-msg {
+      color: var(--danger);
+      font-size: 0.85rem;
+      margin-top: 6px;
+      display: none;
+      font-weight: 600;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 15px 24px;
+      border: none;
+      border-radius: 14px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(225, 29, 72, 0.28);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(225, 29, 72, 0.35);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background: var(--secondary);
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.24);
+    }
+
+    .btn-secondary:hover {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+    }
+
+    /* Gameplay Header */
+    .hud-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 18px;
+    }
+
+    .player-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      background: #f1f5f9;
+      padding: 7px 14px;
+      border-radius: 999px;
+    }
+
+    .hud-stats {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .stat-pill {
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .score-pill {
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    .timer-pill {
+      background: var(--secondary-light);
+      color: var(--secondary);
+      min-width: 82px;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .timer-pill.warning {
+      background: var(--danger-bg);
+      color: var(--danger);
+      animation: pulseBeat 0.8s infinite;
+    }
+
+    .progress-wrapper {
+      margin-bottom: 22px;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 10px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 999px;
+      transition: width 0.4s ease;
+    }
+
+    /* Question Card */
+    .question-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .question-text {
+      font-size: 1.12rem;
+      font-weight: 700;
+      line-height: 1.55;
+      color: var(--text-main);
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      background: #ffffff;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 18px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: all 0.2s ease;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--secondary);
+      background: #f8faff;
+      transform: translateX(4px);
+    }
+
+    .option-btn:disabled {
+      cursor: default;
+    }
+
+    .option-letter {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: #f1f5f9;
+      color: var(--text-main);
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+
+    .option-btn.correct {
+      border-color: var(--success);
+      background: var(--success-bg);
+      color: #14532d;
+      animation: pulseBeat 0.35s ease;
+    }
+
+    .option-btn.correct .option-letter {
+      background: var(--success);
+      color: #fff;
+    }
+
+    .option-btn.wrong {
+      border-color: var(--danger);
+      background: var(--danger-bg);
+      color: #7f1d1d;
+      animation: shake 0.4s ease;
+    }
+
+    .option-btn.wrong .option-letter {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    .explanation-box {
+      display: none;
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin-bottom: 20px;
+      border-left: 5px solid var(--secondary);
+      background: #f0f9ff;
+      animation: fadeIn 0.35s ease;
+    }
+
+    .explanation-box.is-correct {
+      border-left-color: var(--success);
+      background: #f0fdf4;
+    }
+
+    .explanation-box.is-wrong {
+      border-left-color: var(--danger);
+      background: #fef2f2;
+    }
+
+    .explanation-title {
+      font-weight: 800;
+      font-size: 0.98rem;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .explanation-text {
+      font-size: 0.93rem;
+      line-height: 1.5;
+      color: #334155;
+    }
+
+    /* Result Screen */
+    .result-wrapper {
+      text-align: center;
+    }
+
+    .trophy-icon {
+      font-size: 4rem;
+      margin-bottom: 10px;
+      display: inline-block;
+      animation: pulseBeat 1.6s infinite;
+    }
+
+    .grade-badge {
+      display: inline-block;
+      padding: 8px 20px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 1.05rem;
+      margin: 10px 0 18px;
+    }
+
+    .score-circle {
+      width: 144px;
+      height: 144px;
+      border-radius: 50%;
+      margin: 0 auto 22px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 12px 28px rgba(37, 99, 235, 0.25);
+    }
+
+    .score-circle .big-num {
+      font-size: 2.6rem;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .score-circle .small-lbl {
+      font-size: 0.8rem;
+      opacity: 0.9;
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 26px;
+    }
+
+    .summary-card {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 10px;
+    }
+
+    .summary-card .num {
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
+
+    .summary-card .lbl {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .sound-toggle {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      z-index: 10;
+    }
+
+    .sound-toggle:hover {
+      background: #e2e8f0;
+    }
+
+    @media (max-width: 560px) {
+      .screen {
+        padding: 24px 18px;
+      }
+      h1 {
+        font-size: 1.45rem;
+      }
+      .info-grid, .summary-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .info-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 14px;
+      }
+      .hud-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .hud-stats {
+        justify-content: space-between;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <button id="soundToggle" class="sound-toggle" title="Aktifkan/Matikan Efek Suara" aria-label="Suara">🔊</button>
+
+    <!-- HALAMAN SELAMAT DATANG -->
+    <section id="welcomeScreen" class="screen active">
+      <div class="welcome-header">
+        <div class="heart-badge">🫀</div>
+        <div><span class="tag-pill">IPA Kelas 8 SMP</span></div>
+        <h1>Petualangan Sistem Peredaran Darah</h1>
+        <p class="subtitle">Uji pemahamanmu tentang komponen darah, jantung, pembuluh darah, dan gangguan kesehatan melalui kuis interaktif!</p>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="icon">📝</div>
+          <div class="label">Jumlah Soal</div>
+          <div class="value">15 Pilihan Ganda</div>
+        </div>
+        <div class="info-card">
+          <div class="icon">⏱️</div>
+          <div class="label">Batas Waktu</div>
+          <div class="value">60 Detik / Soal</div>
+        </div>
+        <div class="info-card">
+          <div class="icon">🔀</div>
+          <div class="label">Mode Soal</div>
+          <div class="value">Acak & Pembahasan</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="playerName">Nama Lengkap Pemain</label>
+        <input type="text" id="playerName" class="input-name" placeholder="Masukkan namamu di sini..." maxlength="35" autocomplete="off" />
+        <div id="nameError" class="error-msg">Silakan masukkan namamu terlebih dahulu sebelum memulai!</div>
+      </div>
+
+      <button id="startBtn" class="btn btn-primary">Mulai Game 🚀</button>
+    </section>
+
+    <!-- HALAMAN GAMEPLAY -->
+    <section id="gameScreen" class="screen">
+      <div class="hud-bar">
+        <div class="player-badge">
+          <span>👤</span>
+          <span id="displayPlayerName">Pemain</span>
+        </div>
+        <div class="hud-stats">
+          <div class="stat-pill score-pill">
+            <span>⭐ Skor:</span>
+            <span id="liveScore">0</span>
+          </div>
+          <div id="timerBadge" class="stat-pill timer-pill">
+            <span>⏱️</span>
+            <span id="timeLeft">60</span>d
+          </div>
+        </div>
+      </div>
+
+      <div class="progress-wrapper">
+        <div class="progress-meta">
+          <span id="progressText">Soal 1 dari 15</span>
+          <span id="progressPercent">0%</span>
+        </div>
+        <div class="progress-track">
+          <div id="progressBar" class="progress-fill"></div>
+        </div>
+      </div>
+
+      <div class="question-box">
+        <div id="questionText" class="question-text">Memuat pertanyaan...</div>
+      </div>
+
+      <div id="optionsContainer" class="options-list"></div>
+
+      <div id="explanationBox" class="explanation-box">
+        <div id="explanationTitle" class="explanation-title"></div>
+        <div id="explanationText" class="explanation-text"></div>
+      </div>
+
+      <button id="nextBtn" class="btn btn-secondary" style="display: none;">Soal Berikutnya ➡️</button>
+    </section>
+
+    <!-- HALAMAN HASIL (SCOREBOARD) -->
+    <section id="resultScreen" class="screen">
+      <div class="result-wrapper">
+        <div id="resultTrophy" class="trophy-icon">🏆</div>
+        <h2 id="resultPlayerHeading" style="font-size: 1.5rem; font-weight: 800;">Hasil Akhir</h2>
+        <div><span id="gradeBadge" class="grade-badge">Luar Biasa!</span></div>
+
+        <div class="score-circle">
+          <span id="finalScoreValue" class="big-num">100</span>
+          <span class="small-lbl">TOTAL SKOR</span>
+        </div>
+
+        <div class="summary-grid">
+          <div class="summary-card">
+            <div id="totalQuestionsCount" class="num" style="color: var(--secondary);">15</div>
+            <div class="lbl">Total Soal</div>
+          </div>
+          <div class="summary-card">
+            <div id="correctCount" class="num" style="color: var(--success);">0</div>
+            <div class="lbl">Jawaban Benar</div>
+          </div>
+          <div class="summary-card">
+            <div id="wrongCount" class="num" style="color: var(--danger);">0</div>
+            <div class="lbl">Jawaban Salah</div>
+          </div>
+        </div>
+
+        <p id="resultMessage" style="color: var(--text-muted); margin-bottom: 24px; line-height: 1.5;"></p>
+
+        <button id="restartBtn" class="btn btn-primary">Main Lagi 🔄</button>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Bank Soal Pilihan Ganda (15 Soal IPA Kelas 8 - Sistem Peredaran Darah)
+    const questionBank = [
+      {
+        question: "Komponen darah yang berfungsi dalam proses pembekuan darah saat terjadi luka adalah...",
+        options: ["Eritrosit", "Leukosit", "Trombosit", "Plasma darah"],
+        correctAnswer: "Trombosit",
+        explanation: "Trombosit (keping darah) akan pecah saat menyentuh permukaan luka yang kasar dan mengeluarkan enzim trombokinase untuk memulai proses pembekuan darah."
+      },
+      {
+        question: "Perhatikan ciri-ciri sel darah berikut: (1) Bentuk bikonkaf, (2) Tidak memiliki inti sel, (3) Mengandung hemoglobin. Sel darah yang dimaksud adalah...",
+        options: ["Sel darah merah", "Sel darah putih", "Keping darah", "Plasma darah"],
+        correctAnswer: "Sel darah merah",
+        explanation: "Sel darah merah (eritrosit) berbentuk bulat pipih cekung di tengah (bikonkaf), tidak berinti saat dewasa, dan kaya hemoglobin untuk mengikat oksigen."
+      },
+      {
+        question: "Bagian jantung yang berfungsi memompa darah kaya oksigen ke seluruh tubuh adalah...",
+        options: ["Serambi kanan", "Bilik kanan", "Serambi kiri", "Bilik kiri"],
+        correctAnswer: "Bilik kiri",
+        explanation: "Bilik kiri (ventrikel sinister) memiliki dinding otot paling tebal karena bertugas memompa darah bersih kaya oksigen melalui aorta ke seluruh tubuh."
+      },
+      {
+        question: "Pembuluh darah yang dindingnya tipis, kurang elastis, dan memiliki katup di sepanjang jalurnya adalah...",
+        options: ["Arteri", "Vena", "Kapiler", "Aorta"],
+        correctAnswer: "Vena",
+        explanation: "Pembuluh balik (vena) mengalirkan darah kembali ke jantung, berdinding tipis, kurang elastis, dan memiliki banyak katup agar darah tidak mengalir balik."
+      },
+      {
+        question: "Urutan mekanisme peredaran darah kecil yang benar adalah...",
+        options: [
+          "Bilik kanan → paru-paru → serambi kiri",
+          "Bilik kiri → seluruh tubuh → serambi kanan",
+          "Bilik kanan → seluruh tubuh → serambi kiri",
+          "Bilik kiri → paru-paru → serambi kanan"
+        ],
+        correctAnswer: "Bilik kanan → paru-paru → serambi kiri",
+        explanation: "Peredaran darah kecil membawa darah kaya CO₂ dari bilik kanan menuju paru-paru untuk pertukaran gas, lalu darah kaya O₂ kembali ke serambi kiri jantung."
+      },
+      {
+        question: "Pembuluh darah yang berukuran sangat kecil dan berdinding sangat tipis sebagai tempat terjadinya pertukaran gas O₂ dan CO₂ disebut...",
+        options: ["Arteri pulmonalis", "Vena cava", "Pembuluh kapiler", "Arteriola"],
+        correctAnswer: "Pembuluh kapiler",
+        explanation: "Pembuluh kapiler menghubungkan arteriola dan venula dengan dinding selapis sel yang sangat tipis sehingga memudahkan difusi O₂, CO₂, dan sari makanan."
+      },
+      {
+        question: "Gangguan sistem peredaran darah yang ditandai dengan rendahnya kadar hemoglobin dalam darah disebut...",
+        options: ["Leukemia", "Hipertensi", "Anemia", "Hemofilia"],
+        correctAnswer: "Anemia",
+        explanation: "Anemia terjadi akibat kekurangan sel darah merah atau rendahnya kadar hemoglobin, sehingga tubuh mudah lemas, pucat, dan pusing."
+      },
+      {
+        question: "Penyakit keturunan yang menyebabkan darah sulit membeku saat terjadi luka adalah...",
+        options: ["Thalasemia", "Hemofilia", "Varises", "Arteriosklerosis"],
+        correctAnswer: "Hemofilia",
+        explanation: "Hemofilia adalah kelainan genetik akibat tubuh kekurangan faktor pembeku darah tertentu sehingga perdarahan sulit berhenti."
+      },
+      {
+        question: "Katup trikuspidalis pada jantung terletak di antara...",
+        options: [
+          "Serambi kiri dan bilik kiri",
+          "Serambi kanan dan bilik kanan",
+          "Bilik kiri dan aorta",
+          "Bilik kanan dan arteri pulmonalis"
+        ],
+        correctAnswer: "Serambi kanan dan bilik kanan",
+        explanation: "Katup trikuspidalis (berdaun tiga) menjaga agar darah dari bilik kanan tidak kembali masuk ke serambi kanan saat jantung berkontraksi."
+      },
+      {
+        question: "Darah yang banyak mengandung karbondioksida (CO₂) masuk ke jantung melalui...",
+        options: ["Vena pulmonalis", "Arteri pulmonalis", "Vena cava", "Aorta"],
+        correctAnswer: "Vena cava",
+        explanation: "Vena cava (superior dan inferior) membawa darah kotor kaya CO₂ dari seluruh tubuh menuju serambi kanan jantung."
+      },
+      {
+        question: "Seorang pasien memiliki jumlah sel darah putih yang melebihi batas normal secara tak terkendali. Pasien tersebut kemungkinan menderita...",
+        options: ["Leukositosis (Leukemia)", "Anemia", "Hipotensi", "Sklerosis"],
+        correctAnswer: "Leukositosis (Leukemia)",
+        explanation: "Leukemia (kanker darah) ditandai dengan produksi sel darah putih (leukosit) yang berlebihan dan tidak terkendali sehingga memakan sel darah merah."
+      },
+      {
+        question: "Tekanan darah saat jantung berkontraksi (menguncup) disebut tekanan...",
+        options: ["Diastol", "Sistol", "Normal", "Nadi"],
+        correctAnswer: "Sistol",
+        explanation: "Tekanan sistol (angka atas pada tensimeter, normalnya ±120 mmHg) menunjukkan tekanan saat bilik jantung berkontraksi memompa darah keluar."
+      },
+      {
+        question: "Pelebaran pembuluh vena pada bagian kaki yang sering dialami oleh orang yang terlalu lama berdiri disebut...",
+        options: ["Wasir", "Varises", "Embolus", "Trombus"],
+        correctAnswer: "Varises",
+        explanation: "Varises adalah pelebaran atau pembengkakan pembuluh balik (vena) yang umumnya terjadi di betis akibat hambatan aliran darah balik ke jantung."
+      },
+      {
+        question: "Komponen darah yang berfungsi menjaga suhu tubuh dan mengedarkan hormon adalah...",
+        options: ["Sel darah merah", "Sel darah putih", "Keping darah", "Plasma darah"],
+        correctAnswer: "Plasma darah",
+        explanation: "Plasma darah (cairan darah) tersusun atas sekitar 91% air dan protein terlarut yang berperan mengangkut sari makanan, hormon, serta menjaga kestabilan suhu tubuh."
+      },
+      {
+        question: "Zat besi merupakan nutrisi penting untuk mencegah gangguan...",
+        options: ["Hipertensi", "Anemia", "Leukemia", "Jantung koroner"],
+        correctAnswer: "Anemia",
+        explanation: "Zat besi (Fe) merupakan bahan utama pembentuk hemoglobin dalam sel darah merah sehingga asupan zat besi yang cukup dapat mencegah anemia."
+      }
+    ];
+
+    // State Aplikasi
+    let shuffledQuestions = [];
+    let currentIndex = 0;
+    let correctAnswers = 0;
+    let wrongAnswers = 0;
+    let timerInterval = null;
+    let timeRemaining = 60;
+    let isAnswered = false;
+    let soundEnabled = true;
+    let playerName = "";
+
+    // Elemen DOM
+    const welcomeScreen = document.getElementById("welcomeScreen");
+    const gameScreen = document.getElementById("gameScreen");
+    const resultScreen = document.getElementById("resultScreen");
+
+    const playerNameInput = document.getElementById("playerName");
+    const nameError = document.getElementById("nameError");
+    const startBtn = document.getElementById("startBtn");
+    const soundToggle = document.getElementById("soundToggle");
+
+    const displayPlayerName = document.getElementById("displayPlayerName");
+    const liveScore = document.getElementById("liveScore");
+    const timerBadge = document.getElementById("timerBadge");
+    const timeLeftEl = document.getElementById("timeLeft");
+    const progressText = document.getElementById("progressText");
+    const progressPercent = document.getElementById("progressPercent");
+    const progressBar = document.getElementById("progressBar");
+
+    const questionText = document.getElementById("questionText");
+    const optionsContainer = document.getElementById("optionsContainer");
+    const explanationBox = document.getElementById("explanationBox");
+    const explanationTitle = document.getElementById("explanationTitle");
+    const explanationText = document.getElementById("explanationText");
+    const nextBtn = document.getElementById("nextBtn");
+    const restartBtn = document.getElementById("restartBtn");
+
+    // Web Audio API Synthesizer untuk efek suara tanpa file eksternal
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playTone(type) {
+      if (!soundEnabled) return;
+      if (audioCtx.state === "suspended") audioCtx.resume();
+
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      if (type === "correct") {
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(523.25, now); // C5
+        osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
+        osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
+        osc.start(now);
+        osc.stop(now + 0.45);
+      } else if (type === "wrong") {
+        osc.type = "sawtooth";
+        osc.frequency.setValueAtTime(220, now);
+        osc.frequency.linearRampToValueAtTime(150, now + 0.3);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+        osc.start(now);
+        osc.stop(now + 0.35);
+      } else if (type === "finish") {
+        osc.type = "sine";
+        [523.25, 659.25, 783.99, 1046.5].forEach((freq, idx) => {
+          const o = audioCtx.createOscillator();
+          const g = audioCtx.createGain();
+          o.connect(g);
+          g.connect(audioCtx.destination);
+          o.type = "triangle";
+          o.frequency.setValueAtTime(freq, now + idx * 0.12);
+          g.gain.setValueAtTime(0.2, now + idx * 0.12);
+          g.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.12 + 0.4);
+          o.start(now + idx * 0.12);
+          o.stop(now + idx * 0.12 + 0.4);
+        });
+      }
+    }
+
+    soundToggle.addEventListener("click", () => {
+      soundEnabled = !soundEnabled;
+      soundToggle.textContent = soundEnabled ? "🔊" : "🔇";
+    });
+
+    // Fungsi Acak Array (Fisher-Yates Shuffle)
+    function shuffleArray(array) {
+      const copy = [...array];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function switchScreen(screenEl) {
+      [welcomeScreen, gameScreen, resultScreen].forEach(s => s.classList.remove("active"));
+      screenEl.classList.add("active");
+    }
+
+    function calculateScore() {
+      return Math.round((correctAnswers / shuffledQuestions.length) * 100);
+    }
+
+    function startGame() {
+      const inputVal = playerNameInput.value.trim();
+      if (!inputVal) {
+        nameError.style.display = "block";
+        playerNameInput.focus();
+        return;
+      }
+      nameError.style.display = "none";
+      playerName = inputVal;
+      displayPlayerName.textContent = playerName;
+
+      // Reset statistik & acak soal serta pilihan jawaban
+      shuffledQuestions = shuffleArray(questionBank).map(q => ({
+        ...q,
+        shuffledOptions: shuffleArray(q.options)
+      }));
+
+      currentIndex = 0;
+      correctAnswers = 0;
+      wrongAnswers = 0;
+      liveScore.textContent = "0";
+
+      switchScreen(gameScreen);
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      isAnswered = false;
+      clearInterval(timerInterval);
+      timeRemaining = 60;
+      updateTimerUI();
+
+      const total = shuffledQuestions.length;
+      const currentQ = shuffledQuestions[currentIndex];
+
+      // Update Progres
+      const percent = Math.round((currentIndex / total) * 100);
+      progressText.textContent = `Soal ${currentIndex + 1} dari ${total}`;
+      progressPercent.textContent = `${percent}%`;
+      progressBar.style.width = `${percent}%`;
+
+      // Tampilkan Pertanyaan
+      questionText.textContent = currentQ.question;
+
+      // Sembunyikan pembahasan & tombol lanjut
+      explanationBox.style.display = "none";
+      explanationBox.className = "explanation-box";
+      nextBtn.style.display = "none";
+
+      // Render Pilihan Jawaban
+      optionsContainer.innerHTML = "";
+      const letters = ["A", "B", "C", "D"];
+
+      currentQ.shuffledOptions.forEach((optionText, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.innerHTML = `
+          <span class="option-letter">${letters[idx]}</span>
+          <span>${optionText}</span>
+        `;
+        btn.addEventListener("click", () => handleAnswer(btn, optionText));
+        optionsContainer.appendChild(btn);
+      });
+
+      // Mulai Timer 60 Detik
+      timerInterval = setInterval(() => {
+        timeRemaining--;
+        updateTimerUI();
+        if (timeRemaining <= 0) {
+          clearInterval(timerInterval);
+          handleTimeOut();
+        }
+      }, 1000);
+    }
+
+    function updateTimerUI() {
+      timeLeftEl.textContent = timeRemaining;
+      if (timeRemaining <= 10) {
+        timerBadge.classList.add("warning");
+      } else {
+        timerBadge.classList.remove("warning");
+      }
+    }
+
+    function handleAnswer(selectedBtn, selectedText) {
+      if (isAnswered) return;
+      isAnswered = true;
+      clearInterval(timerInterval);
+
+      const currentQ = shuffledQuestions[currentIndex];
+      const isCorrect = selectedText === currentQ.correctAnswer;
+      const allButtons = optionsContainer.querySelectorAll(".option-btn");
+
+      allButtons.forEach(btn => {
+        btn.disabled = true;
+        const btnText = btn.querySelector("span:last-child").textContent;
+        if (btnText === currentQ.correctAnswer) {
+          btn.classList.add("correct");
+        }
+      });
+
+      if (isCorrect) {
+        correctAnswers++;
+        playTone("correct");
+        explanationBox.classList.add("is-correct");
+        explanationTitle.innerHTML = "✅ Jawaban Benar!";
+      } else {
+        wrongAnswers++;
+        selectedBtn.classList.add("wrong");
+        playTone("wrong");
+        explanationBox.classList.add("is-wrong");
+        explanationTitle.innerHTML = `❌ Kurang Tepat! Jawaban benar: <u>${currentQ.correctAnswer}</u>`;
+      }
+
+      liveScore.textContent = calculateScore();
+      explanationText.textContent = currentQ.explanation;
+      explanationBox.style.display = "block";
+
+      nextBtn.textContent = currentIndex === shuffledQuestions.length - 1
+        ? "Lihat Hasil Akhir 🏆"
+        : "Soal Berikutnya ➡️";
+      nextBtn.style.display = "inline-flex";
+    }
+
+    function handleTimeOut() {
+      if (isAnswered) return;
+      isAnswered = true;
+      wrongAnswers++;
+      playTone("wrong");
+
+      const currentQ = shuffledQuestions[currentIndex];
+      const allButtons = optionsContainer.querySelectorAll(".option-btn");
+
+      allButtons.forEach(btn => {
+        btn.disabled = true;
+        const btnText = btn.querySelector("span:last-child").textContent;
+        if (btnText === currentQ.correctAnswer) {
+          btn.classList.add("correct");
+        }
+      });
+
+      explanationBox.classList.add("is-wrong");
+      explanationTitle.innerHTML = `⏰ Waktu Habis! Jawaban benar: <u>${currentQ.correctAnswer}</u>`;
+      explanationText.textContent = currentQ.explanation;
+      explanationBox.style.display = "block";
+
+      nextBtn.textContent = currentIndex === shuffledQuestions.length - 1
+        ? "Lihat Hasil Akhir 🏆"
+        : "Soal Berikutnya ➡️";
+      nextBtn.style.display = "inline-flex";
+    }
+
+    function showResults() {
+      progressBar.style.width = "100%";
+      progressPercent.textContent = "100%";
+
+      const finalScore = calculateScore();
+      const total = shuffledQuestions.length;
+
+      document.getElementById("resultPlayerHeading").textContent = `Selamat, ${playerName}!`;
+      document.getElementById("finalScoreValue").textContent = finalScore;
+      document.getElementById("totalQuestionsCount").textContent = total;
+      document.getElementById("correctCount").textContent = correctAnswers;
+      document.getElementById("wrongCount").textContent = wrongAnswers;
+
+      const gradeBadge = document.getElementById("gradeBadge");
+      const resultTrophy = document.getElementById("resultTrophy");
+      const resultMessage = document.getElementById("resultMessage");
+
+      if (finalScore >= 85) {
+        resultTrophy.textContent = "🏆";
+        gradeBadge.textContent = "Luar Biasa! Penguasaan Materi Sangat Baik";
+        gradeBadge.style.background = "#dcfce7";
+        gradeBadge.style.color = "#15803d";
+        resultMessage.textContent = "Kamu menguasai konsep Sistem Peredaran Darah Manusia dengan sangat baik. Pertahankan prestasimu!";
+      } else if (finalScore >= 70) {
+        resultTrophy.textContent = "🌟";
+        gradeBadge.textContent = "Hebat! Hasil yang Memuaskan";
+        gradeBadge.style.background = "#dbeafe";
+        gradeBadge.style.color = "#1d4ed8";
+        resultMessage.textContent = "Pemahamanmu sudah bagus! Pelajari kembali pembahasan pada soal yang keliru agar semakin sempurna.";
+      } else {
+        resultTrophy.textContent = "💪";
+        gradeBadge.textContent = "Ayo Coba Lagi! Terus Berlatih";
+        gradeBadge.style.background = "#fef3c7";
+        gradeBadge.style.color = "#b45309";
+        resultMessage.textContent = "Jangan menyerah! Baca kembali materi tentang komponen darah, jantung, dan pembuluh darah lalu mainkan lagi kuisnya.";
+      }
+
+      playTone("finish");
+      switchScreen(resultScreen);
+    }
+
+    // Event Listeners
+    startBtn.addEventListener("click", startGame);
+    playerNameInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") startGame();
+    });
+
+    nextBtn.addEventListener("click", () => {
+      currentIndex++;
+      if (currentIndex < shuffledQuestions.length) {
+        loadQuestion();
+      } else {
+        showResults();
+      }
+    });
+
+    restartBtn.addEventListener("click", () => {
+      switchScreen(welcomeScreen);
+    });
+  </script>
+</body>
+</html>
